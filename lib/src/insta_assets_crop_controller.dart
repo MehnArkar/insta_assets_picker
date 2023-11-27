@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:fraction/fraction.dart';
 import 'package:insta_assets_crop/insta_assets_crop.dart';
 import 'package:insta_assets_picker/insta_assets_picker.dart';
+import 'package:wechat_assets_picker/wechat_assets_picker.dart';
 
 /// Uses [InstaAssetsCropSingleton] to keep crop parameters in memory until the picker is disposed
 /// Similar to [Singleton] class from `wechat_assets_picker` package
@@ -202,6 +203,7 @@ class InstaAssetsCropController {
     final step = 1 / list.length;
 
     for (var i = 0; i < list.length; i++) {
+      if(list[i].asset.type==AssetType.image) {
       final file = await list[i].asset.originFile;
 
       final scale = list[i].scale;
@@ -227,6 +229,12 @@ class InstaAssetsCropController {
         sampledFile.delete();
 
         croppedFiles.add(croppedFile);
+      }
+      }else{
+        var videoFile = await list[i].asset.file;
+        if(videoFile!=null) {
+          croppedFiles.add(videoFile);
+        }
       }
 
       // increase progress
