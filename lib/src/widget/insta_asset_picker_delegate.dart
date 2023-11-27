@@ -367,20 +367,19 @@ class InstaAssetPickerBuilder extends DefaultAssetPickerBuilderDelegate {
               children: [
                 InstaPickerCircleIconButton(
                     onTap: ()async{
-                      if(provider.maxAssets>provider.selectedAssets.length) {
-                        await AssetPicker.pickAssets(
-                            context,
-                            pickerConfig: AssetPickerConfig(
-                                maxAssets: provider.maxAssets-provider.selectedAssets.length,
-                                requestType: RequestType.video
-                            )
-                        ).then((value){
-                          if(value !=null){
-                            provider.selectedAssets.addAll(value);
-                            provider.notifyListeners();
-                          }
-                        });
-                      }
+                      await AssetPicker.pickAssets(
+                          context,
+                          pickerConfig: AssetPickerConfig(
+                              selectedAssets: provider.selectedAssets,
+                              maxAssets: provider.maxAssets,
+                              requestType: RequestType.video
+                          )
+                      ).then((value) {
+                        if(value != null) {
+                          provider.selectedAssets = value;
+                          provider.notifyListeners();
+                        }
+                      });
                     },
                     icon: const Icon(Icons.video_camera_back_outlined),
                     theme: theme,
